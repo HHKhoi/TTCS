@@ -1,0 +1,7 @@
+opencv-python
+Pillow
+numpy
+paddleocr
+vietocr
+transformers
+torch
