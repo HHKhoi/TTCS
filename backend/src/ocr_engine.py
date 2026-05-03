@@ -6,9 +6,7 @@ class OCREngine:
     def __init__(self):
         self.ocr = PaddleOCR(
             lang="en",
-            use_angle_cls=False,
-            use_gpu=False,
-            show_log=False,
+            rec_model_dir="backend/train_rec/output/rec_ppocrv4_finetuned_infer"
         )
 
     def extract_text(self, img_or_path):
@@ -18,20 +16,15 @@ class OCREngine:
                 raise ValueError(f"Cannot read image: {img_or_path}")
         else:
             img = img_or_path
-        results = self.ocr.ocr(img, det=False, rec=True, cls=False)
-        texts = []
 
-        def walk(x):
-            if isinstance(x, str):
-                texts.append(x)
-                return
-            if isinstance(x, tuple):
-                x = list(x)
-            if isinstance(x, list):
-                if len(x) >= 2 and isinstance(x[0], str) and isinstance(x[1], (int, float)):
-                    texts.append(x[0])
-                    return
-                for t in x:
-                    walk(t)
-        walk(results)
-        return " ".join(t.strip() for t in texts if t and t.strip())
+        results = self.ocr.ocr(img)
+
+        if not results:
+            return ""
+
+        texts = []
+        for line in results:
+            for box, (text, score) in line:
+                texts.append(text)
+
+        return " ".join(texts)
