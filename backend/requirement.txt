@@ -1,0 +1,7 @@
+paddleocr==2.10.0
+paddlepaddle==2.6.1
+opencv-python==4.13.0.92
+numpy==2.2.6
+pillow==12.2.0
+jiwer==3.0.3
+tqdm==4.67.3

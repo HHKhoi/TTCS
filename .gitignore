@@ -1,0 +1,16 @@
+node_modules/
+dist/
+build/
+venv/
+.venv/
+.venv_gpu/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+Thumbs.db
+train_rec/
+dataset/
+images/
+data.txt
+assets/
