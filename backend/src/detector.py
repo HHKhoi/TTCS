@@ -5,10 +5,7 @@ class TextDetector:
     def __init__(self):
         self.ocr = PaddleOCR(
             lang=DET_LANG,
-            use_angle_cls=False,
-            use_gpu=False,         
-            enable_mkldnn=False,    
-            show_log=False,
+            use_angle_cls=False
         )
 
     def detect_boxes(self, img):
