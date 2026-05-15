@@ -1,9 +1,11 @@
-from transformers import pipeline
+from transformers import pipeline, AutoTokenizer
 
 print("Loading Roberta AI Detector Model...")
+tokenizer = AutoTokenizer.from_pretrained("roberta-base")
 clf = pipeline(
     "text-classification",
     model="Minhkizo/roberta-ai-detector",
+    tokenizer=tokenizer,
     device=-1  # CPU
 )
 print("Model Loaded Successfully!")

@@ -1,15 +1,24 @@
 import cv2
 import os
 
-# Fix crash on Windows CPU with PaddleOCR 3.x by disabling MKLDNN
+# Fix crash on Windows CPU by disabling MKLDNN
 os.environ["PADDLE_PDX_ENABLE_MKLDNN_BYDEFAULT"] = "0"
 
 from paddleocr import PaddleOCR
 
+# Path to the fine-tuned recognition model
+_BACKEND_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_REC_MODEL_DIR = os.path.join(_BACKEND_DIR, "train_rec", "output", "rec_ppocrv4_finetuned_infer")
+
 class OCREngine:
     def __init__(self):
+        print(f"Loading fine-tuned rec model from: {_REC_MODEL_DIR}")
         self.ocr = PaddleOCR(
-            lang="en"
+            lang="en",
+            rec_model_dir=_REC_MODEL_DIR,  # Use our fine-tuned recognition model
+            use_gpu=False,
+            enable_mkldnn=False,
+            show_log=False
         )
 
     def extract_text(self, img_or_path):
@@ -26,7 +35,7 @@ class OCREngine:
             return ""
 
         texts = []
-        
+
         # Support both PaddleOCR v3.x (returns dict) and v2.x (returns list)
         if isinstance(results[0], dict):
             rec_texts = results[0].get('rec_texts', [])
