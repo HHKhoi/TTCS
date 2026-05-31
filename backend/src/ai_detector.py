@@ -15,7 +15,7 @@ def detect_ai(text):
         return {"label": "Unknown", "score": 0.0}
     
     try:
-        # Using the original context length (512 tokens is standard for Roberta)
+        # Using original logic
         result = clf(text[:1000], truncation=True, max_length=512)[0]
         
         return {
