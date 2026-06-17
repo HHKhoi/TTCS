@@ -1,43 +1,34 @@
+# Sắp xếp các boxes theo thứ tự từ trái sang phải từ trên xuống dưới
 def sort_boxes(boxes):
-    return sorted(boxes, key=lambda b: (min(p[1] for p in b), min(p[0] for p in b)))
-
-def merge_boxes_into_lines(boxes, y_thresh=15):
-    if not boxes:
-        return []
-    lines = []
-    current = []
-    def y_center(box):
-        return sum(p[1] for p in box) / 4.0
-    for box in boxes:
-        if not current:
-            current.append(box)
-            continue
-        prev = current[-1]
-        if abs(y_center(box) - y_center(prev)) <= y_thresh:
-            current.append(box)
-        else:
-            lines.append(current)
-            current = [box]
-    if current:
-        lines.append(current)
-    merged = []
-    for line in lines:
-        xs = [p[0] for box in line for p in box]
-        ys = [p[1] for box in line for p in box]
-        x1, x2 = int(min(xs)), int(max(xs))
-        y1, y2 = int(min(ys)), int(max(ys))
-        merged.append([[x1, y1], [x2, y1], [x2, y2], [x1, y2]])
-    return merged
-
+    def get_top_left(box):
+        x = box[0][0]
+        y = box[0][1]
+        return (y, x)
+    return sorted(boxes, key=get_top_left)
 
 def crop_box(img, box, pad=10):
-    h, w = img.shape[:2]
-    xs = [p[0] for p in box]
-    ys = [p[1] for p in box]
-    x1 = max(0, int(min(xs)) - pad)
-    y1 = max(0, int(min(ys)) - pad)
-    x2 = min(w, int(max(xs)) + pad)
-    y2 = min(h, int(max(ys)) + pad)
-    if x2 <= x1 or y2 <= y1:
-        return None
+    # Lấy chiều cao và độ dài của ảnh
+    h = img.shape[0]
+    w = img.shape[1]
+
+    # Danh sách toạ độ x,y của 4 điểm của khung chữ
+    xs = []
+    ys = []
+    for p in box:
+        xs.append(p[0])
+        ys.append(p[1])
+        
+    # Tính biên mới sau khi cộng thêm pad
+    x1 = int(min(xs)) - pad
+    y1 = int(min(ys)) - pad
+    x2 = int(max(xs)) + pad
+    y2 = int(max(ys)) + pad
+    
+    # Kiểm tra lại toạ độ mới có vượt ra ngoài viền ảnh gốc hay không
+    if x1 < 0: x1 = 0
+    if y1 < 0: y1 = 0
+    if x2 > w: x2 = w
+    if y2 > h: y2 = h
+    
+    # Cắt khung chữ
     return img[y1:y2, x1:x2]

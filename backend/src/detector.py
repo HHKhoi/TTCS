@@ -1,26 +1,18 @@
 from paddleocr import PaddleOCR
-from src.settings import DET_LANG
 
 class TextDetector:
     def __init__(self):
-        self.ocr = PaddleOCR(
-            lang=DET_LANG,
-            use_angle_cls=False
-        )
+        self.ocr = PaddleOCR(lang="en")
 
     def detect_boxes(self, img):
-        results = self.ocr.ocr(img, det=True, rec=False, cls=False)
-        boxes = []
+        # Gọi PaddleOCR quét ảnh để lấy tọa độ các hộp chữ
+        results = self.ocr.ocr(img, det=True, rec=False)
+        
         if not results or not results[0]:
-            return boxes
+            return []
+        # Lấy tọa độ 4 góc của từng hộp chữ
+        boxes = []
         for item in results[0]:
-            if isinstance(item, list) and len(item) == 4:
+            if len(item) == 4:
                 boxes.append(item)
-            elif (
-                isinstance(item, list)
-                and len(item) > 0
-                and isinstance(item[0], list)
-                and len(item[0]) == 4
-            ):
-                boxes.append(item[0])
         return boxes

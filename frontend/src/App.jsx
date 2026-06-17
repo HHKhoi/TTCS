@@ -57,7 +57,7 @@ export default function App() {
       }
 
       const confidence = (data.score * 100).toFixed(1);
-      setResult(`${data.label === "AI" ? "🤖 AI-generated" : "👤 Human-written"} (${confidence}%)`);
+      setResult(`${data.label === "AI" ? "AI-generated" : "Human-written"} (${confidence}%)`);
       setExtractedText(data.extracted_text);
 
     } catch (error) {
@@ -71,7 +71,6 @@ export default function App() {
     <div className="container">
       <h1 className="title">AI Text Detection</h1>
 
-      {/* MODE SWITCH */}
       <div className="switch">
         <button
           className={`switch-btn ${mode === "text" ? "active" : ""}`}
@@ -88,7 +87,6 @@ export default function App() {
         </button>
       </div>
 
-      {/* INPUT */}
       <div className="card">
         {mode === "text" ? (
           <textarea
@@ -101,12 +99,12 @@ export default function App() {
           <div>
             <label className="upload-box">
               <input type="file" accept="image/*" onChange={handleImageUpload} hidden />
-              📁 Click to upload image
+               Click to upload image
             </label>
 
             {fileName && (
               <div className="file-info">
-                📄 {fileName}
+                 {fileName}
                 <button className="delete-btn" onClick={() => { setFileName(""); setImageFile(null); }}>
                   ×
                 </button>
@@ -120,7 +118,6 @@ export default function App() {
         </button>
       </div>
 
-      {/* RESULT */}
       {result && (
         <div className="result-card">
           <h3>Result</h3>
