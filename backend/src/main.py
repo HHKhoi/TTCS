@@ -32,7 +32,7 @@ def run():
             continue
 
         # Nhận diện văn bản từ khung đã cắt
-        text = recognizer.extract_text(crop)
+        text = recognizer.recognize_crop(crop)
         
         # Nếu đọc được chữ thêm vào danh sách kết quả
         if text.strip():
