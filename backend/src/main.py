@@ -27,7 +27,7 @@ def run():
     
     for box in boxes:
         # Cắt khung chữ
-        crop = crop_box(img, box, pad=10)
+        crop = crop_box(img, box, pad=2)
         if crop is None or crop.size == 0:
             continue
 

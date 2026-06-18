@@ -24,6 +24,8 @@ class OCREngine:
         return text
 
     def extract_text(self, img_path):
+        
+
         detector = TextDetector()
 
         # Phóng to ảnh lên 2 lần 
@@ -40,7 +42,7 @@ class OCREngine:
         lines = []
         # Cắt từng khung chữ và mang đi nhận diện 
         for box in boxes:
-            crop = crop_box(img, box, pad=10)
+            crop = crop_box(img, box, pad=2)
             if crop is None or crop.size == 0:
                 continue
             text = self.recognize_crop(crop)

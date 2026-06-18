@@ -6,7 +6,7 @@ def sort_boxes(boxes):
         return (y, x)
     return sorted(boxes, key=get_top_left)
 
-def crop_box(img, box, pad=10):
+def crop_box(img, box, pad=2):
     # Lấy chiều cao và độ dài của ảnh
     h = img.shape[0]
     w = img.shape[1]
